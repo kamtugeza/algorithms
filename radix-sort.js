@@ -14,7 +14,17 @@ const assert = require('node:assert/strict');
 function radixSort(input) {
     if (input.length < 2) return input;
     const steps = Math.max(0, ...input.map(item => Math.floor(Math.log10(Math.abs(item))) + 1));
-    for (let step = 0; step < steps; step++) sortByPlace(input, step);
+    const position = buildPosition();
+    for (let step = 0; step < steps; step++) {
+        for (let i = 0; i < input.length; i++) {
+            const item = input[i];
+            const index = position.get(item, step);
+            input.splice(i, 1);
+            input.splice(index, 0, item);
+            position.set(item, step, index);
+        }
+        position.reset();
+    }
     return input;
 }
 
@@ -26,53 +36,21 @@ assert.deepEqual(radixSort([7, 304, 43, 21]), [7, 21, 43, 304]);
 assert.deepEqual(radixSort([-2, 3, 23, -19]), [-19, -2, 3, 23]);
 assert.deepEqual(radixSort([123, -456, 789, 0, -1]), [-456, -1, 0, 123, 789]);
 
-/**
- * Sorts an array of integers in-place based on a specific digit place. It rearranges
- * the input array elements according to the digit at the specified place value.
- *
- * @param {number[]} input - The array of integers to be sorted.
- * @param {number} place - The digit place to sort by (e.g., 0 for units place, 1 for tens place, etc.).
- * @returns {number[]} The input array sorted in-place based on the specified digit place.
- * 
- * @example
- * sortByPlace([123, 456, 789, 1], 0); // Might rearrange array to [1, 123, 456, 789]
- * sortByPlace([123, 456, 789, 1], 1); // Might rearrange array to [1, 123, 789, 456]
- */
-function sortByPlace(input, place) {
-    const position = buildPosition(place);
-    for (let i = 0; i < input.length; i++) {
-        const item = input[i];
-        const index = position.get(item);
-        input.splice(i, 1);
-        input.splice(index, 0, item);
-        position.set(item, index);
-    }
-    return input;
-}
-
-assert.equal(sortByPlace(input, 0), input);
-assert.deepEqual(sortByPlace([7, 304, 43, 21], 0), [21, 43, 304, 7]);
-assert.deepEqual(sortByPlace([7, 304, 43, 21], 1), [7, 304, 21, 43]);
-assert.deepEqual(sortByPlace([7, 304, 43, 21], 2), [7, 43, 21, 304]);
-assert.deepEqual(sortByPlace([7, 304, 43, 21], 3), [7, 304, 43, 21]);
-assert.deepEqual(sortByPlace([-2, 3, 23, -19], 0), [-19, -2, 3, 23]);
-assert.deepEqual(sortByPlace([7, 304, 43, 21, 7], 0), [21, 43, 304, 7, 7]);
-
-function buildPosition(place) {
+function buildPosition() {
     const offset = 9;
     const indexes = Array.from({ length: 19 }, () => -1);
 
-    function getKey(digit) {
+    function getKey(digit, place) {
         return getDigit(digit, place) + offset;
     }
 
-    function get(digit) {
+    function get(digit, place) {
         const key = getKey(digit, place);
         const index = indexes[key] >= 0 ? indexes[key] : Math.max(...indexes.slice(0, key));
         return index + 1;
     }
 
-    function set(digit, index) {
+    function set(digit, place, index) {
         const key = getKey(digit, place);
         indexes[key] = index;
         for (let i = key + 1; i < indexes.length; i++) {
@@ -80,7 +58,11 @@ function buildPosition(place) {
         }
     }
 
-    return { get, set };
+    function reset() {
+        indexes.fill(-1);
+    }
+
+    return { get, set, reset };
 }
 
 /**
