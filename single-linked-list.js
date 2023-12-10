@@ -4,7 +4,7 @@ class Node {
     constructor(value) {
         this.value = value;
         this.next = null;
-    } 
+    }
 }
 
 class SingleLinkedList {
@@ -24,6 +24,24 @@ class SingleLinkedList {
         }
         this.length += values.length;
     }
+
+    pop() {
+        if (!this.head) return undefined;
+        let current = this.head;
+        let newTail = this.head;
+        while (current.next) {
+            newTail = current;
+            current = current.next;
+        }
+        newTail.next = null;
+        this.tail = newTail;
+        this.length--;
+        if (this.length === 0) {
+            this.head = null;
+            this.tail = null;
+        }
+        return current;
+    }
 }
 
 const list = new SingleLinkedList();
@@ -36,7 +54,22 @@ assert.equal(list.head.value, 10);
 assert.equal(list.tail.value, 10);
 assert.equal(list.length, 1);
 
-list.push(1, 43);
-assert.equal(list.head.value, 10);
+assert.equal(list.pop().value, 10);
+assert.equal(list.head, null);
+assert.equal(list.tail, null);
+assert.equal(list.length, 0);
+
+assert.equal(list.pop(), undefined);
+assert.equal(list.head, null);
+assert.equal(list.tail, null);
+assert.equal(list.length, 0);
+
+list.push(20, 1, 43);
+assert.equal(list.head.value, 20);
 assert.equal(list.tail.value, 43);
 assert.equal(list.length, 3);
+
+assert.equal(list.pop().value, 43);
+assert.equal(list.head.value, 20);
+assert.equal(list.tail.value, 1);
+assert.equal(list.length, 2);
