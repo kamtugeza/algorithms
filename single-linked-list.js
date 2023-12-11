@@ -23,6 +23,7 @@ class SingleLinkedList {
             this.tail = node;
         }
         this.length += values.length;
+        return this.length;
     }
 
     pop() {
@@ -42,6 +43,16 @@ class SingleLinkedList {
         }
         return current;
     }
+
+    shift() {
+        if (!this.head) return undefined;
+        const current = this.head;
+        this.head = current.next;
+        this.length--;
+        if (this.length === 0) this.tail = null;
+        current.next = null;
+        return current;
+    }
 }
 
 const list = new SingleLinkedList();
@@ -49,7 +60,7 @@ assert.equal(list.head, null);
 assert.equal(list.tail, null);
 assert.equal(list.length, 0);
 
-list.push(10);
+assert.equal(list.push(10), 1);
 assert.equal(list.head.value, 10);
 assert.equal(list.tail.value, 10);
 assert.equal(list.length, 1);
@@ -64,7 +75,7 @@ assert.equal(list.head, null);
 assert.equal(list.tail, null);
 assert.equal(list.length, 0);
 
-list.push(20, 1, 43);
+assert.equal(list.push(20, 1, 43), 3);
 assert.equal(list.head.value, 20);
 assert.equal(list.tail.value, 43);
 assert.equal(list.length, 3);
@@ -73,3 +84,18 @@ assert.equal(list.pop().value, 43);
 assert.equal(list.head.value, 20);
 assert.equal(list.tail.value, 1);
 assert.equal(list.length, 2);
+
+assert.equal(list.shift().value, 20);
+assert.equal(list.head.value, 1);
+assert.equal(list.tail.value, 1);
+assert.equal(list.length, 1);
+
+assert.equal(list.shift().value, 1);
+assert.equal(list.head, null);
+assert.equal(list.tail, null);
+assert.equal(list.length, 0);
+
+assert.equal(list.shift(), undefined);
+assert.equal(list.head, null);
+assert.equal(list.tail, null);
+assert.equal(list.length, 0);
