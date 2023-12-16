@@ -87,6 +87,20 @@ class SinglyLinkedList {
         this.#length--;
         return target.value;
     }
+
+    reverse() {
+        let node = this.#head;
+        this.#head = this.#tail;
+        this.#tail = node;
+        let target = node.next;
+        node.next = null;
+        while (target) {
+            const newTarget = target.next;
+            target.next = node;
+            node = target;
+            target = newTarget;
+        }
+    }
     
     set(index, value) {
         const node = this.#getNode(index);

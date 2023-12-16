@@ -144,5 +144,14 @@ describe('SinglyLinkedList', () => {
 
         assert.equal(list.remove(2), undefined);
         assert.equal(list.length, 2);
-    })
+    });
+
+    it('reverse a list', () => {
+        const list = new SinglyLinkedList(1, 2, 3, 4);
+        list.reverse();
+        assert.equal(list.get(0), 4);
+        assert.equal(list.get(1), 3);
+        assert.equal(list.get(2), 2);
+        assert.equal(list.get(3), 1);
+    });
 });
