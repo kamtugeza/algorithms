@@ -60,6 +60,24 @@ class SinglyLinkedList {
         this.#length += values.length;
         return this.#length;
     }
+    
+    set(index, value) {
+        if (index < 0 || index >= this.#length) return false;
+        let position = 0;
+        let previous = null;
+        let current = this.#head;
+        while (current.next) {
+            if (position === index) break;
+            previous = current;
+            current = current.next;
+            position++;
+        }
+        const node = new Node(value);
+        node.next = current.next;
+        if (previous) previous.next = node;
+        else this.#head = node;
+        return true;
+    }
 
     shift() {
         if (!this.#head) return undefined;

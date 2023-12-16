@@ -67,4 +67,28 @@ describe('SinglyLinkedList', () => {
         assert.equal(list.shift(), undefined);
         assert.equal(list.length, 0);
     });
+
+    it('replace an item in a list on an index with a provided value', () => {
+        const list = new SinglyLinkedList(1, 2, 3);
+        assert.equal(list.set(1, 20), true);
+        assert.equal(list.get(0), 1);
+        assert.equal(list.get(1), 20);
+        assert.equal(list.get(2), 3);
+
+        assert.equal(list.set(0, 10), true);
+        assert.equal(list.get(0), 10);
+        assert.equal(list.get(1), 20);
+        assert.equal(list.get(2), 3);
+
+        assert.equal(list.set(-1, 100), false);
+        assert.equal(list.get(0), 10);
+        assert.equal(list.get(1), 20);
+        assert.equal(list.get(2), 3);
+
+        assert.equal(list.set(3, 40), false);
+        assert.equal(list.get(0), 10);
+        assert.equal(list.get(1), 20);
+        assert.equal(list.get(2), 3);
+        assert.equal(list.get(3), undefined);
+    });
 });
