@@ -75,6 +75,18 @@ class SinglyLinkedList {
         this.#length += values.length;
         return this.#length;
     }
+
+    remove(index) {
+        if (index < 0 || index >= this.#length) return undefined;
+        if (index === 0) return this.shift();
+        const tailIndex = this.#length - 1;
+        if (index === tailIndex) return this.pop();
+        const parent = this.#getNode(index - 1);
+        const target = parent.next;
+        parent.next = target.next;
+        this.#length--;
+        return target.value;
+    }
     
     set(index, value) {
         const node = this.#getNode(index);

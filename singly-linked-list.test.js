@@ -124,4 +124,25 @@ describe('SinglyLinkedList', () => {
         assert.equal(list.get(5), 40);
         assert.equal(list.length, 6);
     });
+
+    it('remove an item of a list on an index and decrease the length of the list', () => {
+        const list = new SinglyLinkedList(1, 2, 3, 4, 5);
+        assert.equal(list.remove(-1), undefined);
+        assert.equal(list.length, 5);
+
+        assert.equal(list.remove(0), 1);
+        assert.equal(list.get(0), 2);
+        assert.equal(list.length, 4);
+
+        assert.equal(list.remove(1), 3);
+        assert.equal(list.get(1), 4);
+        assert.equal(list.length, 3);
+
+        assert.equal(list.remove(2), 5);
+        assert.equal(list.get(3), undefined);
+        assert.equal(list.length, 2);
+
+        assert.equal(list.remove(2), undefined);
+        assert.equal(list.length, 2);
+    })
 });
