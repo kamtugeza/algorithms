@@ -18,23 +18,53 @@ describe('SinglyLinkedList', () => {
         assert.equal(list.get(0), 5);
         assert.equal(list.get(1), undefined);
         assert.equal(list.length, 1);
-        
-        assert.equal(list.push(15), 2);
-        assert.equal(list.get(0), 5);
-        assert.equal(list.get(1), 15);
-        assert.equal(list.length, 2);
-        
-        assert.equal(list.push(10, 30), 4);
-        assert.equal(list.get(2), 10);
-        assert.equal(list.get(3), 30);
-        assert.equal(list.length, 4);
-
-        assert.equal(list.pop(), 30);
-        assert.equal(list.get(3), undefined);
+                
+        assert.equal(list.push(10, 30), 3);
+        assert.equal(list.get(1), 10);
+        assert.equal(list.get(2), 30);
         assert.equal(list.length, 3);
 
-        assert.equal(list.pop(), 10);
+        assert.equal(list.pop(), 30);
         assert.equal(list.get(2), undefined);
         assert.equal(list.length, 2);
+
+        assert.equal(list.pop(), 10);
+        assert.equal(list.get(1), undefined);
+        assert.equal(list.length, 1);
+
+        assert.equal(list.pop(), 5);
+        assert.equal(list.get(0), undefined);
+        assert.equal(list.length, 0);
+
+        assert.equal(list.pop(), undefined);
+        assert.equal(list.length, 0);
+    });
+
+    it('should unshift and shift values to a list and change the length of the list, respectively', () => {
+        const list = new SinglyLinkedList();
+        assert.equal(list.unshift(4), 1);
+        assert.equal(list.get(0), 4);
+        assert.equal(list.get(1), undefined);
+        assert.equal(list.length, 1);
+
+        assert.equal(list.push(12, 24), 3);
+        assert.equal(list.get(1), 12);
+        assert.equal(list.get(2), 24);
+        assert.equal(list.length, 3);
+
+        assert.equal(list.shift(), 4);
+        assert.equal(list.get(0), 12);
+        assert.equal(list.length, 2);
+
+        assert.equal(list.shift(), 12);
+        assert.equal(list.get(0), 24);
+        assert.equal(list.length, 1);
+
+        assert.equal(list.shift(), 24);
+        assert.equal(list.get(0), undefined);
+        assert.equal(list.length, 0);
+
+        assert.equal(list.shift(), undefined);
+        assert.equal(list.length, 0);
     });
 });

@@ -61,6 +61,26 @@ class SinglyLinkedList {
         return this.#length;
     }
 
+    shift() {
+        if (!this.#head) return undefined;
+        const oldHead = this.#head;
+        this.#head = oldHead.next;
+        if (!this.#head) this.#tail = null;
+        this.#length--;
+        return oldHead?.value;
+    }
+
+    unshift(...values) {
+        for (const value of values) {
+            const node = new Node(value);
+            node.next = this.#head;
+            this.#head = node;
+            if (!this.#tail) this.#tail = node;
+        }
+        this.#length += values.length;
+        return this.#length;
+    }
+
     static of(...initialValues) {
         return new SinglyLinkedList(...initialValues);
     }
