@@ -16,16 +16,19 @@ class SinglyLinkedList {
         if (initialValues.length > 0) this.push(...initialValues);
     }
 
-    get(index) {
-        if (index < 0 || index >= this.#length) return undefined;
+    #getNode(index) {
+        if (index < 0 || index >= this.#length) return null;
         let position = 0;
         let current = this.#head;
-        while (current.next) {
-            if (position === index) break;
+        while (current.next && position !== index) {
             current = current.next;
             position++;
         }
-        return current?.value;
+        return current;
+    }
+
+    get(index) {
+        return this.#getNode(index)?.value;
     }
 
     get length() {
@@ -62,21 +65,12 @@ class SinglyLinkedList {
     }
     
     set(index, value) {
-        if (index < 0 || index >= this.#length) return false;
-        let position = 0;
-        let previous = null;
-        let current = this.#head;
-        while (current.next) {
-            if (position === index) break;
-            previous = current;
-            current = current.next;
-            position++;
+        const node = this.#getNode(index);
+        if (node) {
+            node.value = value;
+            return true;
         }
-        const node = new Node(value);
-        node.next = current.next;
-        if (previous) previous.next = node;
-        else this.#head = node;
-        return true;
+        return false;
     }
 
     shift() {
