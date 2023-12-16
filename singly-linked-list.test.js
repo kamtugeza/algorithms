@@ -91,4 +91,37 @@ describe('SinglyLinkedList', () => {
         assert.equal(list.get(2), 3);
         assert.equal(list.get(3), undefined);
     });
+
+    it('insert a new value on an index and shift the reset items of a list', () => {
+        const list = new SinglyLinkedList(1, 2, 3);
+        assert.equal(list.insert(-1, 100), false);
+        assert.equal(list.length, 3);
+
+        assert.equal(list.insert(0, 10), true);
+        assert.equal(list.get(0), 10);
+        assert.equal(list.get(1), 1);
+        assert.equal(list.get(2), 2);
+        assert.equal(list.get(3), 3);
+        assert.equal(list.length, 4);
+
+        assert.equal(list.insert(4, 40), true);
+        assert.equal(list.get(0), 10);
+        assert.equal(list.get(1), 1);
+        assert.equal(list.get(2), 2);
+        assert.equal(list.get(3), 3);
+        assert.equal(list.get(4), 40);
+        assert.equal(list.length, 5);
+
+        assert.equal(list.insert(6, 500), false);
+        assert.equal(list.length, 5);
+
+        assert.equal(list.insert(1, 100), true);
+        assert.equal(list.get(0), 10);
+        assert.equal(list.get(1), 100);
+        assert.equal(list.get(2), 1);
+        assert.equal(list.get(3), 2);
+        assert.equal(list.get(4), 3);
+        assert.equal(list.get(5), 40);
+        assert.equal(list.length, 6);
+    });
 });

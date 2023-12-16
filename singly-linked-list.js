@@ -31,6 +31,18 @@ class SinglyLinkedList {
         return this.#getNode(index)?.value;
     }
 
+    insert(index, value) {
+        if (index < 0 || index > this.#length) return false;
+        if (index === 0) return this.#length < this.unshift(value);
+        if (index === this.#length) return this.#length < this.push(value);
+        const parent = this.#getNode(index - 1);
+        const node = new Node(value);
+        node.next = parent.next;
+        parent.next = node;
+        this.#length++;
+        return true;
+    }
+
     get length() {
         return this.#length;
     }
