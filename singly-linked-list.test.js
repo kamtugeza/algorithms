@@ -154,4 +154,16 @@ describe('SinglyLinkedList', () => {
         assert.equal(list.get(2), 2);
         assert.equal(list.get(3), 1);
     });
+
+    it('iterates over the list', () => {
+        const result = [];
+        for (const item of SinglyLinkedList.of(1, 2, 3)) result.push(item);
+        assert.deepEqual(result, [1, 2, 3]);
+    });
+
+    it('returns a set of stringified values', () => {
+        const list = SinglyLinkedList.of(1, 2, 3);
+        assert.equal(list.toString(), '1, 2, 3');
+    });
 });
+

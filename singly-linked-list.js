@@ -131,6 +131,22 @@ class SinglyLinkedList {
         return this.#length;
     }
 
+    toString() {
+        return [...this].join(', ');
+    }
+
+    [Symbol.iterator]() {
+        let current = this.#head;
+        return {
+            next() {
+                if (!current) return { done: true };
+                const value = current.value;
+                current = current.next;
+                return { done: false , value };
+            }
+        }
+    }
+
     static of(...initialValues) {
         return new SinglyLinkedList(...initialValues);
     }
